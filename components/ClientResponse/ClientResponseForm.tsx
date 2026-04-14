@@ -148,7 +148,7 @@ export function ClientResponseForm({ onSuccess, editData }: ClientResponseFormPr
         <Input
           id="role"
           name="role"
-          placeholder="CEO, Startup Georgia"
+          placeholder="Role of the client"
           value={form.role}
           onChange={handleChange}
         />

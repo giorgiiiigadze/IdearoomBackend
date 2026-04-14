@@ -175,7 +175,7 @@ export function ServiceForm({ onSuccess, editData }: ServiceFormProps) {
         <Input
           id="title"
           name="title"
-          placeholder="Video Editing"
+          placeholder="Service title"
           value={form.title}
           onChange={handleTitleChange}
           required
@@ -189,7 +189,7 @@ export function ServiceForm({ onSuccess, editData }: ServiceFormProps) {
         <Input
           id="slug"
           name="slug"
-          placeholder="video-editing"
+          placeholder="Title slug (auto generated)"
           value={form.slug}
           onChange={handleChange}
           required
