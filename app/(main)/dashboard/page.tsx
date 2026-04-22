@@ -9,10 +9,13 @@ import {
   MessageSquare, Notebook, MonitorCog,
   UserRoundKey, MonitorCloud,
   Mail, UsersRound, FolderOpenDot,
-  Users, Eye, Radio,
+  Users, Eye,
 } from "lucide-react"
 import { BetaAnalyticsDataClient } from '@google-analytics/data'
 import { DailyUsersChart } from "@/components/Analytics/DailyUsersChart"
+import { ActiveNowCard } from "@/components/Analytics/ActiveNowCard"
+
+export const revalidate = 300
 
 const sections = [
   { title: "Admins", icon: UserRoundKey, href: "/admins", description: "Manage admin users" },
@@ -45,6 +48,7 @@ async function getAnalyticsData() {
       }),
       analyticsDataClient.runRealtimeReport({
         property: `properties/${process.env.GA_PROPERTY_ID}`,
+        minuteRanges: [{ startMinutesAgo: 29, endMinutesAgo: 0 }],
         metrics: [{ name: 'activeUsers' }],
       }),
       analyticsDataClient.runReport({
@@ -87,30 +91,28 @@ export default async function DashboardPage() {
         <Card>
           <CardHeader className="pb-2 flex flex-row items-center gap-2">
             <Users className="h-4 w-4 text-muted-foreground" />
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Users (30 days)</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Total Users (30 days)
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{analytics.totalUsers}</p>
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader className="pb-2 flex flex-row items-center gap-2">
             <Eye className="h-4 w-4 text-muted-foreground" />
-            <CardTitle className="text-sm font-medium text-muted-foreground">Page Views (30 days)</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Page Views (30 days)
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-3xl font-bold">{analytics.totalPageViews}</p>
           </CardContent>
         </Card>
-        <Card>
-          <CardHeader className="pb-2 flex flex-row items-center gap-2">
-            <Radio className="h-4 w-4 text-green-500 animate-pulse" />
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Right Now</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-3xl font-bold text-green-500">{analytics.activeNow}</p>
-          </CardContent>
-        </Card>
+
+        <ActiveNowCard initialValue={analytics.activeNow} />
       </div>
 
       <DailyUsersChart data={analytics.dailyUsers} />
